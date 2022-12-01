@@ -9,7 +9,6 @@ public class CakeClicker {
 		CakePanel panel = new CakePanel();
 		Shop shop = new Shop();
 		panel.showWindow();
-		shop.countMoney();
 	}
 	
 }
