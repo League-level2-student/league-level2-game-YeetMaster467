@@ -37,6 +37,8 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 	Cursor c = new Cursor(30, 40, 50, 50);
 	Timer timer;
 	Rectangle collisionBox;
+	Shop shop = new Shop();
+	boolean hasSprinkles = false;
 
 	@Override
 	public void paintComponent(Graphics g) {
@@ -44,6 +46,7 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 		collisionBox.setBounds(20, 20, 474, 338);
 		g.setFont(normalFont);
 		g.drawString("$" + Shop.money, 20, 30);
+		shop.draw(g);
 		c.draw(g);
 	}
 
@@ -63,6 +66,8 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 		frame.addMouseListener(this);
 		frame.addMouseMotionListener(this);
 		c.loadCursorImage();
+		shop.start();
+
 	}
 
 	void loadImage(String imageFile) {
@@ -107,6 +112,23 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 		if (c.collisionBox.intersects(collisionBox)) {
 			Shop.money += 1;
 			playSound("cash.wav");
+		} else {
+			for (int i = 0; i < shop.buttons.size(); i++) {
+				if (c.collisionBox.intersects(shop.buttons.get(i).collisionBox)) {
+					if (Shop.money == shop.buttons.get(i).cost || Shop.money > shop.buttons.get(i).cost) {
+						playSound("cash.wav");
+						Shop.money -= shop.buttons.get(i).cost;
+						try {
+							shop.buttons.get(i).autoclick();
+						} catch (InterruptedException e1) {
+							e1.printStackTrace();
+						}
+						shop.buttons.get(i).buttonPressed = true;
+					} else {
+						playSound("deny.wav");
+					}
+				}
+			}
 		}
 	}
 
@@ -144,7 +166,6 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		repaint();
-
 	}
 
 }
