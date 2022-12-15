@@ -19,14 +19,14 @@ public class Button implements ActionListener {
 	String text;
 	Color color;
 	int moneyPerSecs;
-	int secs;
+	double secs;
 	int cost;
-	Font normalFont = new Font("Arial", Font.PLAIN, 15);
+	Font normalFont = new Font("Arial", Font.PLAIN, 12);
 	Rectangle collisionBox;
 	boolean buttonPressed = false;
 	Timer timer;
 
-	Button(int x, int y, int width, int height, String text, Color color, int moneyPerSecs, int secs, int cost) {
+	Button(int x, int y, int width, int height, String text, Color color, int moneyPerSecs, double secs, int cost) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -37,7 +37,7 @@ public class Button implements ActionListener {
 		this.secs = secs;
 		this.cost = cost;
 		collisionBox = new Rectangle(x, y, width, height);
-		timer = new Timer(secs * 1000, this);
+		timer = new Timer((int) (secs * 1000), this);
 	}
 
 	public void draw(Graphics g) {

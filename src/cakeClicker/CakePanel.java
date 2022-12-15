@@ -33,20 +33,35 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 	boolean needImage = true;
 	boolean gotImage = false;
 	public static BufferedImage image;
+	public static BufferedImage sprinklesImage;
+	public static BufferedImage iceCreamImage;
+	public static BufferedImage whippedCreamImage;
 	Font normalFont = new Font("Arial", Font.PLAIN, 26);
 	Cursor c = new Cursor(30, 40, 50, 50);
 	Timer timer;
 	Rectangle collisionBox;
 	Shop shop = new Shop();
 	boolean hasSprinkles = false;
+	boolean hasIceCream = false;
+	boolean hasWhippedCream = false;
 
 	@Override
 	public void paintComponent(Graphics g) {
+		needImage = true;
 		g.drawImage(image, 20, 20, 474, 338, null);
 		collisionBox.setBounds(20, 20, 474, 338);
 		g.setFont(normalFont);
 		g.drawString("$" + Shop.money, 20, 30);
 		shop.draw(g);
+		if (hasSprinkles) {
+			g.drawImage(sprinklesImage, 60, 60, 400, 100, null);
+		}
+		if (hasIceCream) {
+			g.drawImage(iceCreamImage, 15, 90, 150, 250, null);
+		}
+		if (hasWhippedCream) {
+			g.drawImage(whippedCreamImage, 150, -5, 200, 150, null);
+		}
 		c.draw(g);
 	}
 
@@ -54,10 +69,14 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 		timer = new Timer(1000 / 60, this);
 		timer.start();
 		collisionBox = new Rectangle(10, 10, 474, 338);
+		sprinklesImage = loadImage("sprinkles.png");
+		image = loadImage("cake.png");
+		iceCreamImage = loadImage("iceCream.png");
+		whippedCreamImage = loadImage("whippedCream.png");
+		playSound("cakeClickerMusic.wav", true);
 	}
 
 	public void showWindow() {
-		loadImage("cake.png");
 		frame.add(this);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -67,22 +86,18 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 		frame.addMouseMotionListener(this);
 		c.loadCursorImage();
 		shop.start();
-
 	}
 
-	void loadImage(String imageFile) {
-		if (needImage) {
-			try {
-				image = ImageIO.read(this.getClass().getResourceAsStream(imageFile));
-				gotImage = true;
-			} catch (Exception e) {
-
-			}
-			needImage = false;
+	BufferedImage loadImage(String imageFile) {
+		try {
+			return ImageIO.read(this.getClass().getResourceAsStream(imageFile));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 
-	private void playSound(String soundFile) {
+	private void playSound(String soundFile, boolean shouldLoop) {
 		String path = "src/cakeClicker/";
 		File sound = new File(path + soundFile);
 		if (sound.exists()) {
@@ -91,6 +106,9 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 					Clip clip = AudioSystem.getClip();
 					clip.open(AudioSystem.getAudioInputStream(sound));
 					clip.start();
+					if (shouldLoop) {
+						clip.loop(Clip.LOOP_CONTINUOUSLY);
+					}
 					Thread.sleep(clip.getMicrosecondLength() / 1000);
 				} catch (Exception e) {
 					System.out.println("Could not play this sound");
@@ -99,7 +117,7 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 		} else {
 			System.out.println("File does not exist");
 		}
-
+		
 	}
 
 	@Override
@@ -111,24 +129,36 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 	public void mousePressed(MouseEvent e) {
 		if (c.collisionBox.intersects(collisionBox)) {
 			Shop.money += 1;
-			playSound("cash.wav");
+			playSound("cash.wav", false);
 		} else {
 			for (int i = 0; i < shop.buttons.size(); i++) {
 				if (c.collisionBox.intersects(shop.buttons.get(i).collisionBox)) {
-					if (Shop.money == shop.buttons.get(i).cost || Shop.money > shop.buttons.get(i).cost) {
-						playSound("cash.wav");
-						Shop.money -= shop.buttons.get(i).cost;
-						try {
-							shop.buttons.get(i).autoclick();
-						} catch (InterruptedException e1) {
-							e1.printStackTrace();
+					if (!shop.buttons.get(i).buttonPressed) {
+						if (Shop.money == shop.buttons.get(i).cost || Shop.money > shop.buttons.get(i).cost) {
+							playSound("cash.wav", false);
+							Shop.money -= shop.buttons.get(i).cost;
+							try {
+								shop.buttons.get(i).autoclick();
+							} catch (InterruptedException e1) {
+								e1.printStackTrace();
+							}
+							if (shop.buttons.get(i) == shop.sprinkles) {
+								hasSprinkles = true;
+							}
+							if(shop.buttons.get(i) == shop.iceCream) {
+								hasIceCream = true;
+							}
+							if(shop.buttons.get(i) == shop.whippedCream) {
+								hasWhippedCream = true;
+							}
+							shop.buttons.get(i).buttonPressed = true;
+						} else {
+							playSound("deny.wav", false);
 						}
-						shop.buttons.get(i).buttonPressed = true;
-					} else {
-						playSound("deny.wav");
 					}
 				}
 			}
+
 		}
 	}
 
@@ -160,12 +190,12 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 	public void mouseMoved(MouseEvent e) {
 		c.x = e.getX() - c.width / 2;
 		c.y = e.getY() - c.height / 2;
-
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		repaint();
 	}
-
-}
+	
+	
+} 
