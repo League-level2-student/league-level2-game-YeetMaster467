@@ -36,6 +36,7 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 	public static BufferedImage sprinklesImage;
 	public static BufferedImage iceCreamImage;
 	public static BufferedImage whippedCreamImage;
+	public static BufferedImage brownieImage;
 	Font normalFont = new Font("Arial", Font.PLAIN, 26);
 	Cursor c = new Cursor(30, 40, 50, 50);
 	Timer timer;
@@ -44,6 +45,7 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 	boolean hasSprinkles = false;
 	boolean hasIceCream = false;
 	boolean hasWhippedCream = false;
+	boolean hasBrownie = false;
 
 	@Override
 	public void paintComponent(Graphics g) {
@@ -62,6 +64,9 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 		if (hasWhippedCream) {
 			g.drawImage(whippedCreamImage, 150, -5, 200, 150, null);
 		}
+		if (hasBrownie) {
+			g.drawImage(brownieImage, 250, 275, 225, 125, null);
+		}
 		c.draw(g);
 	}
 
@@ -73,6 +78,7 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 		image = loadImage("cake.png");
 		iceCreamImage = loadImage("iceCream.png");
 		whippedCreamImage = loadImage("whippedCream.png");
+		brownieImage = loadImage("brownie.png");
 		playSound("cakeClickerMusic.wav", true);
 	}
 
@@ -145,11 +151,14 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 							if (shop.buttons.get(i) == shop.sprinkles) {
 								hasSprinkles = true;
 							}
-							if(shop.buttons.get(i) == shop.iceCream) {
+							if (shop.buttons.get(i) == shop.iceCream) {
 								hasIceCream = true;
 							}
-							if(shop.buttons.get(i) == shop.whippedCream) {
+							if (shop.buttons.get(i) == shop.whippedCream) {
 								hasWhippedCream = true;
+							}
+							if (shop.buttons.get(i) == shop.brownie) {
+								hasBrownie = true;
 							}
 							shop.buttons.get(i).buttonPressed = true;
 						} else {
