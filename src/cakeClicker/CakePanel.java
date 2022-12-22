@@ -7,24 +7,24 @@ import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.net.URL;
-
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
+// import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class CakePanel extends JPanel implements MouseListener, MouseMotionListener, ActionListener {
+public class CakePanel extends JPanel implements MouseListener, MouseMotionListener, ActionListener, KeyListener {
 
 	final int WIDTH = 500;
 	final int HEIGHT = 800;
@@ -32,20 +32,27 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 	JFrame frame = new JFrame();
 	boolean needImage = true;
 	boolean gotImage = false;
+	ImageIcon cupcakeIcon = new ImageIcon("src/cakeClicker/cupcakeIcon.png");
 	public static BufferedImage image;
 	public static BufferedImage sprinklesImage;
 	public static BufferedImage iceCreamImage;
 	public static BufferedImage whippedCreamImage;
 	public static BufferedImage brownieImage;
+	public static BufferedImage cookieImage;
+	public static BufferedImage pieImage;
 	Font normalFont = new Font("Arial", Font.PLAIN, 26);
 	Cursor c = new Cursor(30, 40, 50, 50);
+	MessageText message = new MessageText();
 	Timer timer;
 	Rectangle collisionBox;
 	Shop shop = new Shop();
+	boolean seenInstructions = false;
 	boolean hasSprinkles = false;
 	boolean hasIceCream = false;
 	boolean hasWhippedCream = false;
 	boolean hasBrownie = false;
+	boolean hasCookie = false;
+	boolean hasPie = false;
 
 	@Override
 	public void paintComponent(Graphics g) {
@@ -55,6 +62,7 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 		g.setFont(normalFont);
 		g.drawString("$" + Shop.money, 20, 30);
 		shop.draw(g);
+		message.draw(g);
 		if (hasSprinkles) {
 			g.drawImage(sprinklesImage, 60, 60, 400, 100, null);
 		}
@@ -66,6 +74,12 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 		}
 		if (hasBrownie) {
 			g.drawImage(brownieImage, 250, 275, 225, 125, null);
+		}
+		if (hasCookie) {
+			g.drawImage(cookieImage, 150, 225, 175, 150, null);
+		}
+		if (hasPie) {
+			g.drawImage(pieImage, -10, 225, 215, 160, null);
 		}
 		c.draw(g);
 	}
@@ -79,14 +93,19 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 		iceCreamImage = loadImage("iceCream.png");
 		whippedCreamImage = loadImage("whippedCream.png");
 		brownieImage = loadImage("brownie.png");
+		cookieImage = loadImage("cookies.png");
+		pieImage = loadImage("pieSlice.png");
 		playSound("cakeClickerMusic.wav", true);
 	}
 
 	public void showWindow() {
+		JOptionPane.showMessageDialog(null, "Click the cake to get money,\nUse the money to buy upgrades,\nUpgrades give you money,\nBrag to your friends how much money you have.", "Instructions", JOptionPane.INFORMATION_MESSAGE, cupcakeIcon);
 		frame.add(this);
+		// JButton button = new JButton("Buy Money");
+		// this.add(button);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLocationRelativeTo(null);
+		frame.setLocation(450, 25);
 		frame.setSize(WIDTH, HEIGHT);
 		frame.addMouseListener(this);
 		frame.addMouseMotionListener(this);
@@ -160,6 +179,12 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 							if (shop.buttons.get(i) == shop.brownie) {
 								hasBrownie = true;
 							}
+							if (shop.buttons.get(i) == shop.cookie) {
+								hasCookie = true;
+							}
+							if (shop.buttons.get(i) == shop.pie) {
+								hasPie = true;
+							}
 							shop.buttons.get(i).buttonPressed = true;
 						} else {
 							playSound("deny.wav", false);
@@ -204,6 +229,27 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		repaint();
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		if(e.getKeyChar() == 'i' || e.getKeyChar() == 'I') {
+			JOptionPane.showMessageDialog(null, "Click the cake to get money,\nUse the money to buy upgrades,\nUpgrades give you more money,\nBrag to your friends how much money you have.", "Instructions", JOptionPane.INFORMATION_MESSAGE, cupcakeIcon);
+			message.instructionsRead = true;
+		}
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

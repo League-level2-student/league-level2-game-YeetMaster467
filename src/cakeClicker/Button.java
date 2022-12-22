@@ -21,7 +21,7 @@ public class Button implements ActionListener {
 	int moneyPerSecs;
 	double secs;
 	int cost;
-	Font normalFont = new Font("Arial", Font.PLAIN, 12);
+	Font normalFont = new Font("Arial", Font.PLAIN, 15);
 	Rectangle collisionBox;
 	boolean buttonPressed = false;
 	Timer timer;
@@ -43,12 +43,14 @@ public class Button implements ActionListener {
 	public void draw(Graphics g) {
 		if (!buttonPressed) {
 			g.setColor(color);
+		} else {
+			g.setColor(Color.LIGHT_GRAY);
+		}
 			g.fillRect(x, y, width, height);
 			g.setColor(Color.BLACK);
 			g.setFont(normalFont);
-			g.drawString(text, (int) (x + width / 2 - width / 3), y + height / 2);
+			g.drawString(text, (int) (x + width / 2 - width / 2.5), y + height / 2);
 			collisionBox.setBounds(x, y, width, height);
-		}
 	}
 
 	public void autoclick() throws InterruptedException {
