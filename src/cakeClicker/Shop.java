@@ -14,9 +14,11 @@ public class Shop {
 	Button sprinkles = new Button(10, 400, buttonWidth, buttonHeight, "Sprinkles $50", Color.PINK, 1, 2, 50);
 	Button iceCream = new Button(170, 400, buttonWidth, buttonHeight, "Ice cream $150", new Color(54, 193, 214), 1, 1,150);
 	Button whippedCream = new Button(330, 400, buttonWidth + 7, buttonHeight, "Whipped Cream $500", new Color(235, 202, 202), 2, 0.5, 500);
-	Button brownie = new Button(10, 460, buttonWidth, buttonHeight, "Brownie $1,250", new Color(201, 161, 101), 4, 0.25, 1250);
-	Button cookie = new Button(170, 460, buttonWidth, buttonHeight, "Cookies $3,500", new Color(235, 169, 120), 10, 0.5, 3500);
-	Button pie = new Button(330, 460, buttonWidth + 7, buttonHeight, "Pie Slice $5,700", new Color(214, 96, 96), 20, 0.6, 5700);
+	Button brownie = new Button(10, 460, buttonWidth, buttonHeight, "Brownie $1,250", new Color(201, 161, 101), 4, 0.25, 1_250);
+	Button cookie = new Button(170, 460, buttonWidth, buttonHeight, "Cookies $3,500", new Color(235, 169, 120), 10, 0.5, 3_500);
+	Button pie = new Button(330, 460, buttonWidth + 7, buttonHeight, "Pie Slice $5,700", new Color(214, 96, 96), 20, 0.6, 5_700);
+	Button pudding = new Button(10, 520, buttonWidth, buttonHeight, "Pudding $10,000", new Color(242, 224, 136), 50, 0.5, 10_000);
+	Button crepe = new Button(170, 520, buttonWidth, buttonHeight, "Crepe $17,000", new Color(255, 238, 176), 150, 0.7, 17_000);
 
 	public void start() {
 		buttons.add(sprinkles);
@@ -25,6 +27,8 @@ public class Shop {
 		buttons.add(brownie);
 		buttons.add(cookie);
 		buttons.add(pie);
+		buttons.add(pudding);
+		buttons.add(crepe);
 	}
 
 	public void draw(Graphics g) {

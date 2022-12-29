@@ -34,10 +34,12 @@ public class MessageText implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(!textShowing) {
-			textShowing = true;
-		} else {
-			textShowing = false;
+		if (!instructionsRead) {
+			if(!textShowing) {
+				textShowing = true;
+			} else {
+				textShowing = false;
+			}
 		}
 	}
 	

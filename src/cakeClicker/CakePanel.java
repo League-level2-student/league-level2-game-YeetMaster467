@@ -40,19 +40,22 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 	public static BufferedImage brownieImage;
 	public static BufferedImage cookieImage;
 	public static BufferedImage pieImage;
+	public static BufferedImage puddingImage;
+	public static BufferedImage croissantImage;
 	Font normalFont = new Font("Arial", Font.PLAIN, 26);
 	Cursor c = new Cursor(30, 40, 50, 50);
 	MessageText message = new MessageText();
 	Timer timer;
 	Rectangle collisionBox;
 	Shop shop = new Shop();
-	boolean seenInstructions = false;
 	boolean hasSprinkles = false;
 	boolean hasIceCream = false;
 	boolean hasWhippedCream = false;
 	boolean hasBrownie = false;
 	boolean hasCookie = false;
 	boolean hasPie = false;
+	boolean hasPudding = false;
+	boolean hasCroissant = false;
 
 	@Override
 	public void paintComponent(Graphics g) {
@@ -80,6 +83,8 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 		}
 		if (hasPie) {
 			g.drawImage(pieImage, -10, 225, 215, 160, null);
+		} if (hasPudding) {
+			g.drawImage(puddingImage, 245, 130, 175, 275, null);
 		}
 		c.draw(g);
 	}
@@ -87,6 +92,7 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 	CakePanel() {
 		timer = new Timer(1000 / 60, this);
 		timer.start();
+		frame.addKeyListener(this);
 		collisionBox = new Rectangle(10, 10, 474, 338);
 		sprinklesImage = loadImage("sprinkles.png");
 		image = loadImage("cake.png");
@@ -95,14 +101,19 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 		brownieImage = loadImage("brownie.png");
 		cookieImage = loadImage("cookies.png");
 		pieImage = loadImage("pieSlice.png");
+		puddingImage = loadImage("pudding.png");
+		croissantImage = loadImage("croissant.png");
 		playSound("cakeClickerMusic.wav", true);
 	}
 
 	public void showWindow() {
-		JOptionPane.showMessageDialog(null, "Click the cake to get money,\nUse the money to buy upgrades,\nUpgrades give you money,\nBrag to your friends how much money you have.", "Instructions", JOptionPane.INFORMATION_MESSAGE, cupcakeIcon);
 		frame.add(this);
-		// JButton button = new JButton("Buy Money");
-		// this.add(button);
+		/*	JButton button = new JButton("Buy Money");
+		 *	this.add(button);
+		 *
+		 *  I was thinking about adding micro transactions here,
+		 *  But I didn't. (Thankfully)
+		 */
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocation(450, 25);
@@ -184,6 +195,8 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 							}
 							if (shop.buttons.get(i) == shop.pie) {
 								hasPie = true;
+							} if (shop.buttons.get(i) == shop.pudding) {
+								hasPudding = true;
 							}
 							shop.buttons.get(i).buttonPressed = true;
 						} else {
@@ -234,10 +247,13 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 	@Override
 	public void keyTyped(KeyEvent e) {
 		if(e.getKeyChar() == 'i' || e.getKeyChar() == 'I') {
-			JOptionPane.showMessageDialog(null, "Click the cake to get money,\nUse the money to buy upgrades,\nUpgrades give you more money,\nBrag to your friends how much money you have.", "Instructions", JOptionPane.INFORMATION_MESSAGE, cupcakeIcon);
+			JOptionPane.showMessageDialog(null, "Click the cake to get money,\nUse the money to buy upgrades,\nUpgrades give you more money,\nKeep getting money until you get the FINAL INGREDIENT.\nAfter that you are an immortal being.", "Instructions", JOptionPane.INFORMATION_MESSAGE, cupcakeIcon);
+			if (!message.instructionsRead) {
+				message.text = "                 Great! Get Clicking!";
+			}
 			message.instructionsRead = true;
+			message.textShowing = true;
 		}
-		
 	}
 
 	@Override
