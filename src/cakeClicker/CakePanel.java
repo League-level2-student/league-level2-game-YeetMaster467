@@ -42,6 +42,8 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 	public static BufferedImage pieImage;
 	public static BufferedImage puddingImage;
 	public static BufferedImage croissantImage;
+	public static BufferedImage candyImage;
+	public static BufferedImage cherryImage;
 	Font normalFont = new Font("Arial", Font.PLAIN, 26);
 	Cursor c = new Cursor(30, 40, 50, 50);
 	MessageText message = new MessageText();
@@ -56,6 +58,8 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 	boolean hasPie = false;
 	boolean hasPudding = false;
 	boolean hasCroissant = false;
+	boolean hasCandy = false;
+	boolean hasCherry = false;
 
 	@Override
 	public void paintComponent(Graphics g) {
@@ -83,8 +87,19 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 		}
 		if (hasPie) {
 			g.drawImage(pieImage, -10, 225, 215, 160, null);
-		} if (hasPudding) {
+		} 
+		if (hasPudding) {
 			g.drawImage(puddingImage, 245, 130, 175, 275, null);
+		}
+		if (hasCroissant) {
+			g.drawImage(croissantImage, 10, 250, 275, 150, null);
+		}
+		if (hasCandy) {
+			g.drawImage(candyImage, 75, 10, 150, 200, null);
+			g.drawImage(candyImage, 275, 20, 150, 200, null);
+		}
+		if (hasCherry) {
+			// g.drawImage(cherryImage, )
 		}
 		c.draw(g);
 	}
@@ -103,6 +118,8 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 		pieImage = loadImage("pieSlice.png");
 		puddingImage = loadImage("pudding.png");
 		croissantImage = loadImage("croissant.png");
+		candyImage = loadImage("m&m.png");
+		cherryImage = loadImage("cherry.png");
 		playSound("cakeClickerMusic.wav", true);
 	}
 
@@ -195,8 +212,18 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 							}
 							if (shop.buttons.get(i) == shop.pie) {
 								hasPie = true;
-							} if (shop.buttons.get(i) == shop.pudding) {
+							} 
+							if (shop.buttons.get(i) == shop.pudding) {
 								hasPudding = true;
+							}
+							if (shop.buttons.get(i) == shop.croissant) {
+								hasCroissant = true;
+							}
+							if (shop.buttons.get(i) == shop.candy) {
+								hasCandy = true;
+							}
+							if (shop.buttons.get(i) == shop.cherry) {
+								hasCherry = true;
 							}
 							shop.buttons.get(i).buttonPressed = true;
 						} else {

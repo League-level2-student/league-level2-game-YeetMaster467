@@ -49,7 +49,7 @@ public class Button implements ActionListener {
 			g.fillRect(x, y, width, height);
 			g.setColor(Color.BLACK);
 			g.setFont(normalFont);
-			g.drawString(text, (int) (x + width / 2 - width / 2.5), y + height / 2);
+			g.drawString(text, (int) (x + width / 2 - width / 2.25), y + height / 2);
 			collisionBox.setBounds(x, y, width, height);
 	}
 
