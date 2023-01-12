@@ -15,6 +15,8 @@ public class MessageText implements ActionListener {
 	public boolean instructionsRead = false;
 	boolean textShowing;
 	public String text = "Welcome! Press 'I' anytime for instructions!";
+	public Color color = Color.BLACK;
+	public boolean shouldChange = false;
 	Timer timer;
 	
 	MessageText() {
@@ -26,7 +28,7 @@ public class MessageText implements ActionListener {
 	// x = 25, y = 750
 	public void draw(Graphics g) {
 		if (textShowing) {
-			g.setColor(Color.BLACK);
+			g.setColor(color);
 			g.setFont(messageFont);
 			g.drawString(text, 25, 750);
 		}
@@ -40,6 +42,12 @@ public class MessageText implements ActionListener {
 			} else {
 				textShowing = false;
 			}
+		} 
+		else if (shouldChange) {
+			color = Color.BLACK;
+			messageFont = new Font("Arial", Font.PLAIN, 24);
+			shouldChange = false;
+			text = "  Almost there! Just a few more clicks!";
 		}
 	}
 	

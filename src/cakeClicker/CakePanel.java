@@ -1,6 +1,7 @@
 
 package cakeClicker;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
@@ -44,6 +45,7 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 	public static BufferedImage croissantImage;
 	public static BufferedImage candyImage;
 	public static BufferedImage cherryImage;
+	public static BufferedImage confettiImage;
 	Font normalFont = new Font("Arial", Font.PLAIN, 26);
 	Cursor c = new Cursor(30, 40, 50, 50);
 	MessageText message = new MessageText();
@@ -99,7 +101,8 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 			g.drawImage(candyImage, 275, 20, 150, 200, null);
 		}
 		if (hasCherry) {
-			// g.drawImage(cherryImage, )
+			g.drawImage(cherryImage, 200, -5, 100, 100, null);
+			g.drawImage(confettiImage, 20, 20, 474, 338, null);
 		}
 		c.draw(g);
 	}
@@ -120,6 +123,7 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 		croissantImage = loadImage("croissant.png");
 		candyImage = loadImage("m&m.png");
 		cherryImage = loadImage("cherry.png");
+		confettiImage = loadImage("confetti.png");
 		playSound("cakeClickerMusic.wav", true);
 	}
 
@@ -188,44 +192,131 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 				if (c.collisionBox.intersects(shop.buttons.get(i).collisionBox)) {
 					if (!shop.buttons.get(i).buttonPressed) {
 						if (Shop.money == shop.buttons.get(i).cost || Shop.money > shop.buttons.get(i).cost) {
-							playSound("cash.wav", false);
-							Shop.money -= shop.buttons.get(i).cost;
-							try {
-								shop.buttons.get(i).autoclick();
-							} catch (InterruptedException e1) {
-								e1.printStackTrace();
-							}
+							// here
 							if (shop.buttons.get(i) == shop.sprinkles) {
 								hasSprinkles = true;
+								playSound("cash.wav", false);
+								Shop.money -= shop.buttons.get(i).cost;
+								try {
+									shop.buttons.get(i).autoclick();
+								} catch (InterruptedException e1) {
+									e1.printStackTrace();
+								}
+								shop.buttons.get(i).buttonPressed = true;
 							}
 							if (shop.buttons.get(i) == shop.iceCream) {
 								hasIceCream = true;
+								playSound("cash.wav", false);
+								Shop.money -= shop.buttons.get(i).cost;
+								try {
+									shop.buttons.get(i).autoclick();
+								} catch (InterruptedException e1) {
+									e1.printStackTrace();
+								}
+								shop.buttons.get(i).buttonPressed = true;
 							}
 							if (shop.buttons.get(i) == shop.whippedCream) {
 								hasWhippedCream = true;
+								playSound("cash.wav", false);
+								Shop.money -= shop.buttons.get(i).cost;
+								try {
+									shop.buttons.get(i).autoclick();
+								} catch (InterruptedException e1) {
+									e1.printStackTrace();
+								}
+								shop.buttons.get(i).buttonPressed = true;
 							}
 							if (shop.buttons.get(i) == shop.brownie) {
 								hasBrownie = true;
+								playSound("cash.wav", false);
+								Shop.money -= shop.buttons.get(i).cost;
+								try {
+									shop.buttons.get(i).autoclick();
+								} catch (InterruptedException e1) {
+									e1.printStackTrace();
+								}
+								shop.buttons.get(i).buttonPressed = true;
 							}
 							if (shop.buttons.get(i) == shop.cookie) {
 								hasCookie = true;
+								playSound("cash.wav", false);
+								Shop.money -= shop.buttons.get(i).cost;
+								try {
+									shop.buttons.get(i).autoclick();
+								} catch (InterruptedException e1) {
+									e1.printStackTrace();
+								}
+								shop.buttons.get(i).buttonPressed = true;
 							}
 							if (shop.buttons.get(i) == shop.pie) {
 								hasPie = true;
+								playSound("cash.wav", false);
+								Shop.money -= shop.buttons.get(i).cost;
+								try {
+									shop.buttons.get(i).autoclick();
+								} catch (InterruptedException e1) {
+									e1.printStackTrace();
+								}
+								shop.buttons.get(i).buttonPressed = true;
 							} 
 							if (shop.buttons.get(i) == shop.pudding) {
 								hasPudding = true;
+								playSound("cash.wav", false);
+								Shop.money -= shop.buttons.get(i).cost;
+								try {
+									shop.buttons.get(i).autoclick();
+								} catch (InterruptedException e1) {
+									e1.printStackTrace();
+								}
+								shop.buttons.get(i).buttonPressed = true;
 							}
 							if (shop.buttons.get(i) == shop.croissant) {
 								hasCroissant = true;
+								playSound("cash.wav", false);
+								Shop.money -= shop.buttons.get(i).cost;
+								try {
+									shop.buttons.get(i).autoclick();
+								} catch (InterruptedException e1) {
+									e1.printStackTrace();
+								}
+								shop.buttons.get(i).buttonPressed = true;
 							}
 							if (shop.buttons.get(i) == shop.candy) {
 								hasCandy = true;
+								playSound("cash.wav", false);
+								Shop.money -= shop.buttons.get(i).cost;
+								try {
+									shop.buttons.get(i).autoclick();
+								} catch (InterruptedException e1) {
+									e1.printStackTrace();
+								}
+								shop.buttons.get(i).buttonPressed = true;
 							}
 							if (shop.buttons.get(i) == shop.cherry) {
-								hasCherry = true;
+								if (hasSprinkles && hasIceCream && hasWhippedCream && hasBrownie && hasCookie && hasPie && hasPudding && hasCroissant && hasCandy) {
+									hasCherry = true;
+									playSound("partyHorn.wav", false);
+									Shop.money -= shop.buttons.get(i).cost;
+									try {
+										shop.buttons.get(i).autoclick();
+									} catch (InterruptedException e1) {
+										e1.printStackTrace();
+									}
+									message.text = "Yay! You have made the perfect cake!";
+									shop.buttons.get(i).buttonPressed = true;
+								} else {
+									playSound("deny.wav", false);
+									message.instructionsRead = true;
+									message.textShowing = true;
+									message.color = Color.RED;
+									message.messageFont = new Font("Arial", Font.PLAIN, 18);
+									message.text = "You must have all other items before buying this item.";
+									message.timer.stop();
+									message.shouldChange = true;
+									message.timer = new Timer(1500, message);
+									message.timer.start();
+								}
 							}
-							shop.buttons.get(i).buttonPressed = true;
 						} else {
 							playSound("deny.wav", false);
 						}
@@ -274,7 +365,7 @@ public class CakePanel extends JPanel implements MouseListener, MouseMotionListe
 	@Override
 	public void keyTyped(KeyEvent e) {
 		if(e.getKeyChar() == 'i' || e.getKeyChar() == 'I') {
-			JOptionPane.showMessageDialog(null, "Click the cake to get money,\nUse the money to buy upgrades,\nUpgrades give you more money,\nKeep getting money until you get the FINAL INGREDIENT.\nAfter that you are an immortal being.", "Instructions", JOptionPane.INFORMATION_MESSAGE, cupcakeIcon);
+			JOptionPane.showMessageDialog(null, "Click the cake to get money,\nUse the money to buy upgrades,\nUpgrades give you more money,\nKeep getting money until you get the FINAL INGREDIENT.\nAfter that you have the ULTIMITE CAKE!", "Instructions", JOptionPane.INFORMATION_MESSAGE, cupcakeIcon);
 			if (!message.instructionsRead) {
 				message.text = "                 Great! Get Clicking!";
 			}
